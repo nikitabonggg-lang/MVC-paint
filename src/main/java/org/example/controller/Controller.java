@@ -11,6 +11,7 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 // TODO: Сделать singleton класс
+
 public class Controller {
     private final Model model;
     private final MyFrame frame;
