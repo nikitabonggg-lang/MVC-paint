@@ -43,8 +43,6 @@ public class Controller {
         frame = new MyFrame();
         frame.setPanel(panel);
 
-
-        // Устанавливаем связь между контроллерами после полной инициализации
         MenuController menuController = MenuController.getInstance();
         menuController.setMainController(this);
         frame.setMenu();
