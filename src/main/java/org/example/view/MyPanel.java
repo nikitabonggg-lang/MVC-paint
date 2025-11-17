@@ -1,14 +1,13 @@
 package org.example.view;
 
 import org.example.controller.Controller;
+import org.example.model.Observer;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
-import java.util.Observable;
-import java.util.Observer;
 import javax.swing.JPanel;
 
 
@@ -20,13 +19,15 @@ public class MyPanel extends JPanel implements Observer {
         addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent arg0) {
-                controller.getPointOne(arg0.getPoint());
+                controller.startDrawing(arg0.getPoint());
             }
         });
         addMouseMotionListener(new MouseMotionAdapter() {
             @Override
             public void mouseDragged(MouseEvent arg0) {
-                controller.getPointTwo(arg0.getPoint());
+                controller.updateDrawing(arg0.getPoint());
+                repaint();
+
             }
         });
     }
@@ -39,8 +40,8 @@ public class MyPanel extends JPanel implements Observer {
     }
 
     @Override
-    public void update(Observable o, Object arg) {
-        repaint();
+    public void onModelChanged(){
+        repaint(); // Вызывается при изменении модели
     }
 
 }

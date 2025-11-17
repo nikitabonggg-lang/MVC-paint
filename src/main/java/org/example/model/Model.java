@@ -2,22 +2,33 @@ package org.example.model;
 
 import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
-import java.util.Observable;
+import java.util.ArrayList;
+import java.util.List;
 
-public class Model extends Observable {
+public class Model extends Rename {
     private MyShape currentShape;
+    private List<MyShape> shapes = new ArrayList<>();
 
     public void setMyShape(MyShape myShape) {
         this.currentShape = myShape;
     }
 
+    public void createCurrentShape(MyShape shape) {
+        this.currentShape = shape;
+        shapes.add(shape);
+        notifyObservers();
+    }
+
     public void changeShape(Point2D x, Point2D y) {
-        currentShape.setFrame(x, y);
-        this.setChanged();
-        this.notifyObservers();
+        if (currentShape != null) {
+            currentShape.setFrame(x, y);
+            notifyObservers();
+        }
     }
 
     public void draw(Graphics2D g) {
-        currentShape.draw(g);
+        for (MyShape shape : shapes) {
+            shape.draw(g);
+        }
     }
 }
