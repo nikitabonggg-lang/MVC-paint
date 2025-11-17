@@ -18,7 +18,7 @@ public class Controller {
     private final MyFrame frame;
     private final MyPanel panel;
     private ActionDraw actionDraw;
-    private DrawingSettings drawingSettings;
+    private MenuState menuState;
 
 
 
@@ -33,7 +33,7 @@ public class Controller {
 
     private Controller() {
         model = new Model();
-        drawingSettings = new DrawingSettings();
+        menuState = new MenuState();
 
         MyShape sampleShape = createSampleShape();
         actionDraw = new ActionDraw(model, sampleShape);
@@ -52,29 +52,29 @@ public class Controller {
 
     private MyShape createSampleShape() {
         return MyShapeFactory.createShape(
-                drawingSettings.getShapeType(),
-                drawingSettings.getColor(),
-                drawingSettings.getFillType()
+                menuState.getShapeType(),
+                menuState.getColor(),
+                menuState.getFillType()
         );
     }
 
     public void setShapeType(ShapeType type) {
-        this.drawingSettings.setShapeType(type);
+        this.menuState.setShapeType(type);
         updateActionDraw();
     }
 
     public void setCurrentColor(Color color) {
-        this.drawingSettings.setColor(color);
+        this.menuState.setColor(color);
         updateActionDraw();
     }
 
     public void setFillType(FillType fillType) {
-        this.drawingSettings.setFill(fillType == FillType.FILL);
+        this.menuState.setFill(fillType == FillType.FILL);
         updateActionDraw();
     }
 
     public Color getCurrentColor() {
-        return drawingSettings.getColor();
+        return menuState.getColor();
     }
 
     private void updateActionDraw() {

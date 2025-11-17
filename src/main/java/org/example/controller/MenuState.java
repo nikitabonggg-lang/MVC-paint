@@ -4,7 +4,7 @@ import org.example.model.shape.ShapeType;
 import org.example.model.shape.fill.FillType;
 import java.awt.Color;
 
-public class DrawingSettings {
+public class MenuState {
     private boolean fill = true;
     private Color color = Color.GRAY;
     private ShapeType shapeType = ShapeType.RECTANGLE;
