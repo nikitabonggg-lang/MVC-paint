@@ -18,7 +18,6 @@ public class MenuController {
     }
 
     private MenuController() {
-        // Не инициализируем mainController здесь
     }
 
     public void setMainController(Controller controller) {
@@ -28,7 +27,6 @@ public class MenuController {
     public JMenuBar createMenuBar() {
         JMenuBar menuBar = new JMenuBar();
 
-        // Меню выбора фигуры
         JMenu shapeMenu = new JMenu("Фигура");
         ButtonGroup shapeGroup = new ButtonGroup();
 

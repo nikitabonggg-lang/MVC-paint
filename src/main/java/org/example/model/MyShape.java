@@ -24,10 +24,8 @@ public class MyShape implements Cloneable{
     }
 
     public MyShape clone() {
-        // Создаем копию формы
         RectangularShape shapeCopy = (RectangularShape) this.shape.clone();
 
-        // Создаем новый FillBehavior того же типа
         FillBehavior fbCopy;
         if (this.fb instanceof Fill) {
             fbCopy = new Fill();
@@ -39,7 +37,6 @@ public class MyShape implements Cloneable{
         fbCopy.setColor(this.color);
         fbCopy.setShape(shapeCopy);
 
-        // Создаем новую фигуру
         MyShape cloned = new MyShape(this.color, shapeCopy, fbCopy);
         return cloned;
     }
