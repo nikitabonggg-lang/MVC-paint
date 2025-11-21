@@ -21,7 +21,5 @@ public class MyFrame extends JFrame {
     public void setMenu() {
         MenuController menuController = MenuController.getInstance();
         setJMenuBar(menuController.createMenuBar());
-
     }
-
 }

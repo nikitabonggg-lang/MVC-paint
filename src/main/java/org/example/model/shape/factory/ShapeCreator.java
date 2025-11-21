@@ -1,6 +1,7 @@
 package org.example.model.shape.factory;
 
-import org.example.controller.DrawingSettings;
+import org.example.controller.MenuController;
+import org.example.controller.MenuState;
 import org.example.model.MyShape;
 import org.example.model.shape.ShapeType;
 import org.example.model.shape.fill.FillType;
@@ -10,7 +11,7 @@ import java.awt.*;
 
 public class ShapeCreator {
     private static ShapeCreator instance;
-    private DrawingSettings drawingSettings;
+    private MenuState menuState;
 
     private ShapeCreator(){
 
@@ -24,18 +25,18 @@ public class ShapeCreator {
         return instance;
     }
 
-    public void configure(DrawingSettings state){
-        this.drawingSettings = state;
+    public void configure(MenuState state){
+        this.menuState = state;
     }
 
     public MyShape createShape(){
-        if (drawingSettings == null) {
+        if (menuState == null) {
             return MyShapeFactory.createShape(ShapeType.RECTANGLE, Color.GRAY, FillType.FILL);
         }
         return MyShapeFactory.createShape(
-                drawingSettings.getShapeType(),
-                drawingSettings.getColor(),
-                drawingSettings.getFillType()
+                menuState.getShapeType(),
+                menuState.getColor(),
+                menuState.getFillType()
         );
     }
 }

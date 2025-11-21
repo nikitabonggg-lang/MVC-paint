@@ -5,7 +5,7 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Model extends Rename {
+public class Model extends RenameObservers {
     private MyShape currentShape;
     private List<MyShape> shapes = new ArrayList<>();
 
@@ -15,7 +15,7 @@ public class Model extends Rename {
 
     public void createCurrentShape(MyShape shape) {
         this.currentShape = shape;
-        shapes.add(shape);
+        shapes.add(shape); // Важно: добавляем фигуру в список
         notifyObservers();
     }
 
@@ -24,6 +24,14 @@ public class Model extends Rename {
             currentShape.setFrame(x, y);
             notifyObservers();
         }
+    }
+
+    public List<MyShape> getShapeList() {
+        return shapes;
+    }
+
+    public void update() {
+        notifyObservers();
     }
 
     public void draw(Graphics2D g) {
