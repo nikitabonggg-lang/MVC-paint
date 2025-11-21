@@ -37,11 +37,9 @@ public class Controller {
         model = new Model();
         menuState = new MenuState();
 
-        // Инициализируем и настраиваем ShapeCreator
         shapeCreator = ShapeCreator.getInstance();
         shapeCreator.configure(menuState);
 
-        // Создаем ActionDraw один раз
         MyShape sampleShape = shapeCreator.createShape();
         actionDraw = new ActionDraw(model, sampleShape);
         currentAction = actionDraw;
