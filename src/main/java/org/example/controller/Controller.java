@@ -1,8 +1,9 @@
 package org.example.controller;
 
-import org.example.controller.action.ActionDraw;
-import org.example.controller.action.ActionMove;
-import org.example.controller.action.AppAction;
+import org.example.controller.actions.ActionDraw;
+import org.example.controller.actions.ActionMove;
+import org.example.controller.actions.AppAction;
+import org.example.controller.state.UndoMachine;
 import org.example.model.Model;
 import org.example.model.MyShape;
 import org.example.model.shape.factory.ShapeCreator;
@@ -10,7 +11,9 @@ import org.example.view.MyFrame;
 import org.example.view.MyPanel;
 import org.example.model.shape.ShapeType;
 import org.example.model.shape.fill.FillType;
+import org.example.view.menu.MenuCreator;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Point2D;
 
@@ -22,7 +25,10 @@ public class Controller {
     private AppAction currentAction;
     private MenuState menuState;
     private ShapeCreator shapeCreator;
-    private ActionDraw actionDraw; // Сохраняем ссылку на ActionDraw
+    private ActionDraw actionDraw;
+    private UndoMachine undoMachine;
+    private AppAction pendingAction;
+    private MenuCreator menuCreator;
 
     public static Controller getInstance() {
         synchronized (Controller.class) {
@@ -36,6 +42,7 @@ public class Controller {
     private Controller() {
         model = new Model();
         menuState = new MenuState();
+        undoMachine = new UndoMachine();
 
         shapeCreator = ShapeCreator.getInstance();
         shapeCreator.configure(menuState);
@@ -50,10 +57,16 @@ public class Controller {
         frame = new MyFrame();
         frame.setPanel(panel);
 
-        // Устанавливаем связь между контроллерами после полной инициализации
-        MenuController menuController = MenuController.getInstance();
-        menuController.setMainController(this);
-        frame.setMenu();
+        menuCreator = MenuCreator.getInstance();
+        menuCreator.setState(menuState);
+        menuCreator.setModel(model);
+        menuCreator.setMainController(this);
+        menuCreator.setUndoMachine(undoMachine);
+
+        JToolBar toolBar = menuCreator.createToolBar();
+        toolBar.setOrientation(JToolBar.VERTICAL);
+        frame.add(toolBar, BorderLayout.WEST);
+        frame.setJMenuBar(menuCreator.createMenuBar());
         frame.revalidate();
     }
 
@@ -77,7 +90,6 @@ public class Controller {
     }
 
     public void setDrawingAction() {
-        // Обновляем образец фигуры в существующем ActionDraw
         shapeCreator.configure(menuState);
         MyShape sampleShape = shapeCreator.createShape();
         actionDraw.setSampleShape(sampleShape);
@@ -90,23 +102,59 @@ public class Controller {
 
     private void updateCurrentAction() {
         if (currentAction instanceof ActionDraw) {
-            // Обновляем образец фигуры в существующем ActionDraw
             shapeCreator.configure(menuState);
             MyShape sampleShape = shapeCreator.createShape();
             actionDraw.setSampleShape(sampleShape);
         }
-        // Для ActionMove обновление не требуется
     }
 
     public void startDrawing(Point2D p) {
         currentAction.mousePressed(p);
+        if (currentAction instanceof ActionDraw) {
+            pendingAction = currentAction.cloneAction();
+        }
     }
 
     public void updateDrawing(Point2D p) {
         currentAction.mouseDragged(p);
     }
 
+    public void finishDrawing(Point2D p) {
+        if (currentAction instanceof ActionMove) {
+            pendingAction = currentAction.cloneAction();
+        }
+
+        if (pendingAction != null) {
+            undoMachine.add(pendingAction);
+            pendingAction = null;
+            updateUndoRedoButtons();
+        }
+    }
+
     public void draw(Graphics2D g2) {
         model.draw(g2);
+    }
+
+    public void undo() {
+        undoMachine.executeUndo();
+        updateUndoRedoButtons();
+    }
+
+    public void redo() {
+        undoMachine.executeRedo();
+        updateUndoRedoButtons();
+    }
+
+    public void updateUndoRedoButtons() {
+        undoMachine.updateButtons();
+        if (menuCreator != null) {
+            menuCreator.updateMenuButtons();
+        }
+    }
+
+    public void clearModel() {
+        model.clear();
+        undoMachine.clearHistory();
+        updateUndoRedoButtons();
     }
 }
