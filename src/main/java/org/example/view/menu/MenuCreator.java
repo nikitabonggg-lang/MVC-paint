@@ -153,7 +153,7 @@ public class MenuCreator {
         undoMenuItem.setEnabled(false); // Изначально выключена
 
         // Redo
-        redoMenuItem = new JMenuItem("Повторить");
+        redoMenuItem = new JMenuItem("Вернуть");
         CommandActionListener redoActionListener = new CommandActionListener(new SwitchRedo(undoMachine));
         redoMenuItem.addActionListener(redoActionListener);
         redoMenuItem.setEnabled(false); // Изначально выключена
