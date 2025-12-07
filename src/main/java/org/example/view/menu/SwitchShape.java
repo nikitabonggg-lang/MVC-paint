@@ -1,24 +1,21 @@
 package org.example.view.menu;
+import org.example.model.factory.MenuState;
+import org.example.model.factory.ShapeType;
 
-import org.example.controller.MenuState;
-import org.example.model.shape.ShapeType;
-import javax.swing.*;
+public class SwitchShape implements  AppCommand{
 
-public class SwitchShape implements AppCommand {
-    private MenuState menuState;
     private ShapeType shapeType;
-    private JRadioButtonMenuItem radioButton;
 
-    public SwitchShape(MenuState menuState, ShapeType shapeType, JRadioButtonMenuItem radioButton) {
-        this.menuState = menuState;
+    private MenuState state;
+
+    public SwitchShape(ShapeType shapeType, MenuState state) {
         this.shapeType = shapeType;
-        this.radioButton = radioButton;
+        this.state = state;
     }
 
     @Override
-    public void execute(){
-        radioButton.setSelected(true);
-        menuState.setShapeType(shapeType);
+    public void execute() {
+        state.setShapeType(shapeType);
+
     }
 }
-

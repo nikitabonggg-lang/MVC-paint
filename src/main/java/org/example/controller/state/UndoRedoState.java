@@ -1,12 +1,23 @@
 package org.example.controller.state;
 
-import org.example.controller.actions.AppAction;
+import lombok.Getter;
+import org.example.controller.action.AppAction;
 
 import java.util.LinkedList;
 
 public abstract class UndoRedoState {
     private static final int MAX_UNDO = 50;
+
+    public LinkedList<AppAction> getUndoActivityList() {
+        return undoActivityList;
+    }
+
     private final LinkedList<AppAction> undoActivityList;
+
+    public LinkedList<AppAction> getRedoActivityList() {
+        return redoActivityList;
+    }
+
     private final LinkedList<AppAction> redoActivityList;
 
     protected UndoRedoState(LinkedList<AppAction> undoActivityList, LinkedList<AppAction> redoActivity) {
@@ -17,35 +28,13 @@ public abstract class UndoRedoState {
     public abstract UndoRedoState undo();
     public abstract UndoRedoState redo();
 
-    public void clearHistory() {
+    public void clearHistory(){
         redoActivityList.clear();
     }
-
-    public void clearAll() {
-        undoActivityList.clear();
-        redoActivityList.clear();
-    }
-
-    public void addAction(AppAction action) {
-        if (undoActivityList.size() >= MAX_UNDO) {
-            undoActivityList.removeFirst(); // Удаляем самое старое действие
+    public  void addAction(AppAction action){
+        if(undoActivityList.size() != MAX_UNDO){
+            undoActivityList.add(action);
         }
-        undoActivityList.addLast(action);
-    }
-
-    public LinkedList<AppAction> getUndoActivityList() {
-        return undoActivityList;
-    }
-
-    public LinkedList<AppAction> getRedoActivityList() {
-        return redoActivityList;
-    }
-
-    public boolean canUndo() {
-        return !undoActivityList.isEmpty();
-    }
-
-    public boolean canRedo() {
-        return !redoActivityList.isEmpty();
     }
 }
+

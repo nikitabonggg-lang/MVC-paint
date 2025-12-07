@@ -1,5 +1,4 @@
 package org.example.view.menu;
-
 import org.example.controller.state.UndoMachine;
 
 public class SwitchRedo implements AppCommand {
@@ -10,8 +9,9 @@ public class SwitchRedo implements AppCommand {
     }
 
     @Override
-    public void execute(){
+    public void execute() {
         undoMachine.executeRedo();
         undoMachine.updateButtons();
     }
+
 }

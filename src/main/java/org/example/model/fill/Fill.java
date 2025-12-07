@@ -1,4 +1,4 @@
-package org.example.model.shape.fill;
+package org.example.model.fill;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -9,17 +9,14 @@ public class Fill implements FillBehavior {
     private Color color;
     private RectangularShape shape;
 
-
-    @Override
-    public FillBehavior copy() {
-        Fill copy = new Fill();
-        copy.setColor(this.color);
-        return copy;
-    }
-
     @Override
     public void setColor(Color color) {
         this.color = color;
+    }
+
+    @Override
+    public Color getColor() {
+        return color;
     }
 
     @Override
@@ -33,6 +30,19 @@ public class Fill implements FillBehavior {
     @Override
     public void setShape(RectangularShape s) {
         shape = s;
+    }
+
+    @Override
+    public RectangularShape getShape() {
+        return shape;
+    }
+
+    @Override
+    public  FillBehavior clone(){
+        Fill fill = new Fill();
+        fill.setColor(color);
+        fill.shape =(RectangularShape) shape.clone();
+        return  fill;
     }
 
 }

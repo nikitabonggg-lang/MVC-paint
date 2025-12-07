@@ -1,51 +1,32 @@
 package org.example.view.menu;
-
-import org.example.controller.Controller;
-import org.example.controller.MenuState;
+import org.example.model.factory.MenuState;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class SwitchColor implements AppCommand {
-    private MenuState menuState;
-    private boolean useDefault;
-    private Color defaultColor;
-    private JRadioButtonMenuItem radioButton;
-    private Controller controller;
 
-    public SwitchColor(MenuState menuState, boolean useDefault, Color defaultColor, JRadioButtonMenuItem radioButton, Controller controller) {
-        this.menuState = menuState;
-        this.useDefault = useDefault;
-        this.defaultColor = defaultColor;
+public class SwitchColor implements AppCommand{
+    private JRadioButtonMenuItem radioButton;
+
+    private boolean useDefault;
+
+    private MenuState menuState;
+
+    private Color defaultColor;
+
+    public SwitchColor(JRadioButtonMenuItem radioButton, boolean useDefault, MenuState menuState, Color defaultColor) {
         this.radioButton = radioButton;
-        this.controller = controller;
+        this.useDefault = useDefault;
+        this.menuState = menuState;
+        this.defaultColor = defaultColor;
     }
 
     @Override
     public void execute() {
-        if (radioButton != null) {
-            radioButton.setSelected(!useDefault);
-        }
-
-        Color color;
-        if (useDefault) {
-            color = defaultColor;
-        } else {
-            Color currentColor = menuState.getColor();
-            color = JColorChooser.showDialog(null, "Выбор цвета",
-                    currentColor != null ? currentColor : Color.BLACK);
-
-            if (color == null){
-                return;
-            }
-        }
-
+        radioButton.setSelected(!useDefault);
+        Color color = useDefault
+                ? defaultColor
+                : JColorChooser.showDialog(null, "Выбор цвета", Color.BLACK);
         menuState.setColor(color);
-
-        if (controller != null){
-            controller.setCurrentColor(color);
-        }
     }
 }
-
-

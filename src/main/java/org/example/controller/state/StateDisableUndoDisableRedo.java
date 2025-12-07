@@ -1,6 +1,6 @@
 package org.example.controller.state;
 
-import org.example.controller.actions.AppAction;
+import org.example.controller.action.AppAction;
 
 import java.util.LinkedList;
 

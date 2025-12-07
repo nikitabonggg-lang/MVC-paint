@@ -25,12 +25,13 @@ sourceSets {
 }
 
 dependencies {
-//    compileOnly 'org.projectlombok:lombok:1.18.34'
-//    annotationProcessor 'org.projectlombok:lombok:1.18.34'
+    implementation 'org.projectlombok:lombok:1.18.28'
+    compileOnly 'org.projectlombok:lombok:1.18.34'
+    annotationProcessor 'org.projectlombok:lombok:1.18.34'
 
     testImplementation platform('org.junit:junit-bom:5.9.1')
-//    testCompileOnly 'org.projectlombok:lombok:1.18.34'
-//    testAnnotationProcessor 'org.projectlombok:lombok:1.18.34'
+    testCompileOnly 'org.projectlombok:lombok:1.18.34'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.34'
     testImplementation 'org.junit.jupiter:junit-jupiter'
 }
 

@@ -1,4 +1,4 @@
-package org.example.model.shape.fill;
+package org.example.model.fill;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -9,6 +9,12 @@ public interface FillBehavior {
 
     void setColor(Color c);
 
+    Color getColor();
+
     void setShape(RectangularShape s);
-    FillBehavior copy();
+
+    RectangularShape getShape();
+
+    FillBehavior clone();
+    //void fill();
 }

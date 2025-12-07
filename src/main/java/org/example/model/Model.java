@@ -1,64 +1,56 @@
 package org.example.model;
 
-import java.awt.Graphics2D;
+import java.awt.*;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
 
-public class Model extends RenameObservers {
-    private List<MyShape> shapeList = new ArrayList<>();
+public class Model extends Observable {
     private MyShape currentShape;
+    private List<MyShape> shapeList = new ArrayList<>();
 
-    public void createCurrentShape(MyShape shape) {
-        this.currentShape = shape;
+    public void  createCurrentShape(MyShape shape){
+        currentShape = shape;
         shapeList.add(shape);
-        notifyObservers();
     }
-
-    public void addCurrentShape(MyShape shape) {
-        shapeList.add(shape);
-        notifyObservers();
+    public void addCurrentShape(MyShape sampleShape){
+        shapeList.add(sampleShape);
     }
-
-    public void addShape(MyShape shape) {
-        shapeList.add(shape);
-        notifyObservers();
-    }
-
-    public void removeShape(MyShape shape) {
-        shapeList.remove(shape);
-        notifyObservers();
-    }
-
     public MyShape getLastShape() {
-        if (!shapeList.isEmpty()) {
-            return shapeList.get(shapeList.size() - 1);
+        int size = shapeList.size();
+        return shapeList.isEmpty() ? null : shapeList.get(size - 1);
+    }
+    public void  removeLastShape() {
+        if(shapeList == null) {
+            return;
+        } else {
+            int size = shapeList.size();
+            shapeList.remove(size - 1);
         }
-        return null;
+
     }
 
-    public void removeLastShape() {
-        if (!shapeList.isEmpty()) {
-            shapeList.remove(shapeList.size() - 1);
-            notifyObservers();
-        }
+    public void setMyShape(MyShape myShape) {
+        this.currentShape = myShape;
     }
 
-    public void clear() {
-        shapeList.clear();
-        notifyObservers();
+    public void changeShape(Point2D x, Point2D y) {
+        currentShape.setFrame(x, y);
+    }
+
+    public void draw(Graphics2D g) {
+        for (MyShape shape : shapeList){
+            shape.draw(g);
+        }
+    }
+    public void update()
+    {
+        this.setChanged();
+        this.notifyObservers();
     }
 
     public List<MyShape> getShapeList() {
-        return new ArrayList<>(shapeList);
-    }
-
-    public void update() {
-        notifyObservers();
-    }
-
-    public void draw(Graphics2D g2) {
-        for (MyShape shape : shapeList) {
-            shape.draw(g2);
-        }
+        return shapeList;
     }
 }

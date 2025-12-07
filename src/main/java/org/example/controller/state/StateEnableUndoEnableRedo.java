@@ -1,6 +1,6 @@
 package org.example.controller.state;
 
-import org.example.controller.actions.AppAction;
+import org.example.controller.action.AppAction;
 
 import java.util.LinkedList;
 
@@ -12,33 +12,33 @@ public class StateEnableUndoEnableRedo extends UndoRedoState {
 
     @Override
     public UndoRedoState undo() {
-        if (getUndoActivityList().isEmpty()) return this;
-
-        AppAction action = getUndoActivityList().removeLast();
-        getRedoActivityList().addLast(action);
-        action.unexecute();
-
-        return createNewState();
+        LinkedList<AppAction> undoActivityList = getUndoActivityList();
+        LinkedList<AppAction> redoActivityList = getRedoActivityList();
+        AppAction action = undoActivityList.pollLast();
+        if (action != null) {
+            redoActivityList.add(action);
+            action.unexecute();
+        }
+        if (!redoActivityList.isEmpty()) {
+            return new StateEnableUndoEnableRedo(getUndoActivityList(), getRedoActivityList());
+        } else return new StateDisableUndoEnableRedo(getUndoActivityList(), getRedoActivityList());
     }
 
     @Override
     public UndoRedoState redo() {
-        if (getRedoActivityList().isEmpty()) return this;
+        LinkedList<AppAction> undoActivityList = getUndoActivityList();
+        LinkedList<AppAction> redoActivityList = getRedoActivityList();
+        AppAction action = redoActivityList.pollLast();
+        if (action != null) {
+            undoActivityList.add(action);
+            action.execute();
+        }
 
-        AppAction action = getRedoActivityList().removeLast();
-        getUndoActivityList().addLast(action);
-        action.execute();
-
-        return createNewState();
-    }
-
-    private UndoRedoState createNewState() {
-        boolean canUndo = !getUndoActivityList().isEmpty();
-        boolean canRedo = !getRedoActivityList().isEmpty();
-
-        if (canUndo && canRedo) return this;
-        if (canUndo) return new StateEnableUndoDisableRedo(getUndoActivityList(), getRedoActivityList());
-        if (canRedo) return new StateDisableUndoEnableRedo(getUndoActivityList(), getRedoActivityList());
-        return new StateDisableUndoDisableRedo(getUndoActivityList(), getRedoActivityList());
+        if (!redoActivityList.isEmpty()) {
+            return new StateEnableUndoEnableRedo(getUndoActivityList(), getRedoActivityList());
+        }
+        else {
+            return new StateEnableUndoDisableRedo(getUndoActivityList(),getRedoActivityList());
+        }
     }
 }
