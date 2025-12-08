@@ -1,17 +1,17 @@
 package org.example.view.menu;
-import org.example.controller.state.UndoMachine;
+import org.example.controller.state.Undo;
 
 public class SwitchUndo implements AppCommand {
-    private UndoMachine undoMachine;
+    private Undo undo;
 
-    public SwitchUndo(UndoMachine undoMachine) {
-        this.undoMachine = undoMachine;
+    public SwitchUndo(Undo undo) {
+        this.undo = undo;
     }
 
     @Override
     public void execute() {
-        undoMachine.executeUndo();
-        undoMachine.updateButtons();
+        undo.executeUndo();
+        undo.updateButtons();
     }
 
 }

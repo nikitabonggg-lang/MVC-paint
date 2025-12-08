@@ -5,12 +5,12 @@ import org.example.view.menu.CommandActionListener;
 
 import java.util.LinkedList;
 
-public class UndoMachine {
+public class Undo {
     private UndoRedoState undoRedoState;
     private CommandActionListener undo;
     private CommandActionListener redo;
 
-    public UndoMachine() {
+    public Undo() {
         LinkedList<AppAction> undoList = new LinkedList<>();
         LinkedList<AppAction> redoList = new LinkedList<>();
         undoRedoState = new StateDisableUndoDisableRedo(undoList, redoList);

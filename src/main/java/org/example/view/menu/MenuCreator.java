@@ -5,7 +5,7 @@ import lombok.Setter;
 import org.example.controller.action.ActionDraw;
 import org.example.controller.action.ActionMove;
 import org.example.controller.action.AppAction;
-import org.example.controller.state.UndoMachine;
+import org.example.controller.state.Undo;
 import org.example.model.factory.MenuState;
 import org.example.model.factory.ShapeType;
 import org.example.model.Model;
@@ -26,7 +26,7 @@ public class MenuCreator {
     private Model model;
     private MyShape shape;
     private MenuState state;
-    private UndoMachine undoMachine;
+    private Undo undo;
     private JRadioButtonMenuItem rgbButton;
 
     public Model getModel() {
@@ -191,18 +191,18 @@ public class MenuCreator {
 
         URL redoUrl = getClass().getClassLoader().getResource("ico/redo_16x16.png");
         ImageIcon redoIco = redoUrl == null ? null : new ImageIcon(redoUrl);
-        AppCommand redoC = new SwitchRedo(undoMachine);
+        AppCommand redoC = new SwitchRedo(undo);
         CommandActionListener redoListeenr = new CommandActionListener("Вперед-назад", redoIco, redoC);
         menuItems.add(redoListeenr);
 
         URL undoUrl = getClass().getClassLoader().getResource("ico/undo_16x16.png");
         ImageIcon undoIco = undoUrl == null ? null : new ImageIcon(undoUrl);
-        AppCommand undoC = new SwitchUndo(undoMachine);
+        AppCommand undoC = new SwitchUndo(undo);
         CommandActionListener undoListener = new CommandActionListener("Вперед-назад", undoIco, undoC);
         menuItems.add(undoListener);
-        undoMachine.setUndo(undoListener);
+        undo.setUndo(undoListener);
         undoListener.setEnabled(false);
-        undoMachine.setRedo(redoListeenr);
+        undo.setRedo(redoListeenr);
         redoListeenr.setEnabled(false);
 
 
@@ -216,8 +216,8 @@ public class MenuCreator {
     public void setState(MenuState state) {
         this.state = state;
     }
-    public void setUndoMachine(UndoMachine undoMachine) {
-        this.undoMachine = undoMachine;
+    public void setUndoMachine(Undo undo) {
+        this.undo = undo;
     }
 
 

@@ -1,7 +1,7 @@
 package org.example.controller;
 
 import org.example.controller.action.ActionDraw;
-import org.example.controller.state.UndoMachine;
+import org.example.controller.state.Undo;
 import org.example.model.factory.MenuState;
 import org.example.controller.action.AppAction;
 import org.example.model.factory.ShapeCreationFactory;
@@ -22,7 +22,7 @@ public class Controller {
     private MyPanel panel;
     private MenuState state;
     private static Controller instansce;
-    private UndoMachine machine;
+    private Undo machine;
 
     public static synchronized Controller getInstance(){
         if(instansce == null){
@@ -50,7 +50,7 @@ public class Controller {
 
         frame = new MyFrame();
         frame.setPanel(panel);
-        machine = new UndoMachine();
+        machine = new Undo();
 
         MenuCreator menuCreator = MenuCreator.getInstance();
         menuCreator.setState(state);
